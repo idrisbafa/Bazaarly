@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bazaarly – Online Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f8;--surface:#fff;--ink:#17212b;--muted:#5d6b7a;--line:#dfe3e8;--accent:#f2b01e;--accent-ink:#1a1400;--link:#0b6b64;--hero:#17212b;--hero-ink:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161d;--surface:#18212b;--ink:#eef1f4;--muted:#9aa7b4;--line:#2a3643;--link:#4fd1c5;--hero:#0a0f14}}
+:root[data-theme="dark"]{--bg:#10161d;--surface:#18212b;--ink:#eef1f4;--muted:#9aa7b4;--line:#2a3643;--link:#4fd1c5;--hero:#0a0f14}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.45}
+button,input,select{font:inherit;color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--hero);color:var(--hero-ink);display:flex;gap:12px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.4rem;letter-spacing:-.02em}
+.logo b{color:var(--accent)}
+.search{flex:1 1 260px;display:flex;min-width:0}
+.search input{flex:1;min-width:0;padding:10px 12px;border:0;border-radius:8px 0 0 8px;background:#fff;color:#17212b}
+.search button{border:0;background:var(--accent);color:var(--accent-ink);padding:0 16px;border-radius:0 8px 8px 0;font-weight:600;cursor:pointer}
+.cartbtn{background:none;border:1px solid #ffffff55;color:inherit;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.cartbtn:focus-visible,.search button:focus-visible,.add:focus-visible,.chip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+nav{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;max-width:1200px;margin:0 auto}
+.chip{white-space:nowrap;border:1px solid var(--line);background:var(--surface);padding:6px 14px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.banner{max-width:1200px;margin:4px auto 8px;padding:0 16px}
+.banner div{background:var(--hero);color:var(--hero-ink);border-radius:14px;padding:28px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.banner h1{margin:0 0 6px;font-size:clamp(1.5rem,4vw,2.4rem);letter-spacing:-.02em;max-width:18ch}
+.banner p{margin:0;color:#c3ccd5}
+.banner .big{font-size:3.4rem}
+.bar{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.bar select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.grid{max-width:1200px;margin:0 auto;padding:0 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.pic{height:150px;display:grid;place-items:center;font-size:4rem}
+.info{padding:12px;display:flex;flex-direction:column;gap:4px;flex:1}
+.info h3{margin:0;font-size:1rem}
+.seller{color:var(--muted);font-size:.85rem}
+.rate{color:var(--link);font-size:.85rem}
+.price{font-size:1.25rem;font-weight:800;margin-top:auto}
+.price s{font-weight:400;color:var(--muted);font-size:.9rem;margin-left:6px}
+.add{margin-top:8px;border:0;background:var(--accent);color:var(--accent-ink);padding:9px;border-radius:8px;font-weight:600;cursor:pointer}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(380px,100%);background:var(--surface);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .25s;z-index:10;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+aside.open{transform:none}
+aside h2{margin:0;padding:16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:1.2rem}
+aside h2 button{border:0;background:none;font-size:1.4rem;cursor:pointer}
+#lines{flex:1;overflow:auto;padding:8px 16px}
+.line{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.line .t{font-size:1.8rem}
+.line .n{flex:1;font-size:.95rem}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--bg);cursor:pointer}
+.foot{padding:16px;border-top:1px solid var(--line)}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:1.2rem;margin-bottom:10px}
+.checkout{width:100%;padding:12px;border:0;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-weight:800;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.toast.show{opacity:1}
+.card{position:relative}.heart{position:absolute;top:8px;right:8px;border:0;background:var(--surface);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem;color:#c2410c}.badge{position:absolute;top:8px;left:8px;background:#c2410c;color:#fff;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:6px}.filters{display:flex;gap:8px;flex-wrap:wrap}.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:30;padding:16px}.modal.open{display:grid}.sheet{background:var(--surface);border-radius:14px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:20px;position:relative}.sheet .pic{height:180px;border-radius:10px}.sheet .x{position:absolute;top:10px;right:14px;border:0;background:none;font-size:1.5rem;cursor:pointer}.rv{border-top:1px solid var(--line);padding:8px 0;font-size:.92rem}.ship{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:6px 0 4px}.ship i{display:block;height:100%;background:var(--link)}.coupon{display:flex;gap:6px;margin-bottom:10px}.coupon input{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}.mini{display:flex;gap:10px;overflow-x:auto;padding:0 0 8px}.mini span{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px;white-space:nowrap;cursor:pointer}.sec{max-width:1200px;margin:0 auto;padding:0 16px}.sec h2{font-size:1rem;margin:8px 0}.vw{cursor:pointer}.cmpb{display:flex;gap:8px;align-items:center;padding:6px 0}.tbl{width:100%;border-collapse:collapse}.tbl td,.tbl th{border-top:1px solid var(--line);padding:8px;text-align:left;font-size:.92rem}#wl[aria-pressed='true']{background:var(--accent);color:var(--accent-ink)}@media (prefers-reduced-motion:reduce){aside{transition:none}.toast{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Bazaar<b>ly</b></div>
+  <form class="search" onsubmit="return false" role="search">
+    <input id="q" type="search" placeholder="Search products or sellers" aria-label="Search products or sellers">
+    <button type="button" id="go">Search</button>
+  </form>
+  <button class='cartbtn' id='acct'>Sign in</button><button class='cartbtn' id='ord'>Orders</button><button class='cartbtn' id='wl' aria-pressed='false'>♥ Wishlist (<span id='wc'>0</span>)</button><button class='cartbtn' id='open'>Cart (<span id='count'>0</span>)</button>
+</header>
+<nav id="cats" aria-label="Categories"></nav>
+<section class="banner"><div>
+  <span><h1>Everything you need, from sellers you can trust</h1><p>No sponsored listings. Prices shown include delivery. 60-day returns.</p></span>
+  <span class="big" aria-hidden="true">📦</span>
+</div></section>
+<div class="bar">
+  <span id='result' class='seller'></span><span class='filters'><label class='seller'>Rating <select id='rf'><option value='0'>All</option><option value='4'>4★ and up</option><option value='4.5'>4.5★ and up</option></select></label><label class='seller'>Price <select id='pf'><option value='999'>Any</option><option value='25'>Under $25</option><option value='50'>Under $50</option><option value='75'>Under $75</option></select></label></span>
+  <label class="seller">Sort by
+    <select id="sort"><option value="rec">Featured</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option><option value="rate">Top rated</option></select>
+  </label>
+</div>
+<div class='sec' id='rvwrap'></div><div class='sec' id='cmpbar'></div><main class='grid' id='grid'></main>
+
+<aside id="drawer" aria-label="Shopping cart" aria-hidden="true">
+  <h2>Your cart <button id="close" aria-label="Close cart">×</button></h2>
+  <div id="lines"></div>
+  <div class="foot">
+    <div id='ship'></div><div class='coupon'><input id='cp' placeholder='Coupon code (try SAVE10)' aria-label='Coupon code'><button class='chip' id='applycp'>Apply</button></div><div class='total'><span>Total</span><span id="total">$0.00</span></div>
+    <button class="checkout" id="checkout">Checkout</button>
+  </div>
+</aside>
+<div class='modal' id='modal'><div class='sheet' role='dialog' aria-modal='true'><button class='x' id='mx' aria-label='Close'>×</button><div id='mbody'></div></div></div><div class='toast' id='toast' role='status'></div>
+
+<script>
+const P=[
+{id:1,n:"Wireless noise-cancelling headphones",c:"Electronics",s:"SoundHouse",p:89,o:129,r:4.6,e:"🎧",b:"#dbeafe"},
+{id:2,n:"Smart fitness watch",c:"Electronics",s:"PulseTech",p:59,o:79,r:4.3,e:"⌚",b:"#e0e7ff"},
+{id:3,n:"Portable power bank 20,000 mAh",c:"Electronics",s:"VoltCo",p:29,o:39,r:4.7,e:"🔋",b:"#fef3c7"},
+{id:4,n:"Insulated steel water bottle",c:"Home",s:"Evergreen Goods",p:18,o:24,r:4.8,e:"🍶",b:"#d1fae5"},
+{id:5,n:"Ceramic pour-over coffee set",c:"Home",s:"Slow Morning",p:34,o:45,r:4.5,e:"☕",b:"#fde8d7"},
+{id:6,n:"Cotton bedsheet set, queen",c:"Home",s:"Linen & Co.",p:42,o:60,r:4.4,e:"🛏️",b:"#fce7f3"},
+{id:7,n:"Everyday canvas backpack",c:"Fashion",s:"Northfold",p:38,o:55,r:4.6,e:"🎒",b:"#ede9fe"},
+{id:8,n:"Lightweight running shoes",c:"Fashion",s:"StrideLab",p:64,o:90,r:4.2,e:"👟",b:"#fee2e2"},
+{id:9,n:"Polarized sunglasses",c:"Fashion",s:"Shade Supply",p:22,o:30,r:4.1,e:"🕶️",b:"#cffafe"},
+{id:10,n:"Hardcover notebook, 3-pack",c:"Office",s:"Paper Trail",p:15,o:20,r:4.9,e:"📓",b:"#ecfccb"},
+{id:11,n:"Adjustable laptop stand",c:"Office",s:"DeskWorks",p:27,o:36,r:4.5,e:"💻",b:"#e2e8f0"},
+{id:12,n:"Yoga mat, non-slip",c:"Sports",s:"FlexFit",p:25,o:35,r:4.4,e:"🧘",b:"#d1fae5"}
+];
+const cats=["All",...new Set(P.map(p=>p.c))];
+let cat='All',cart={},wish=[],orders=[],seen=[],cmp=[],wishOnly=false,coupon='',user=null;
+try{const s=JSON.parse(localStorage.getItem('bz-state')||'{}');cart=s.cart||{};wish=s.wish||[];orders=s.orders||[];seen=s.seen||[];coupon=s.coupon||'';user=s.user||null}catch(e){}
+const $=id=>document.getElementById(id);
+const money=n=>"$"+n.toFixed(2);
+function save(){try{localStorage.setItem('bz-state',JSON.stringify({cart,wish,orders,seen,coupon,user}))}catch(e){}}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),1500)}
+function renderCats(){$("cats").innerHTML=cats.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("")}
+function renderGrid(){
+  const q=$("q").value.trim().toLowerCase(),s=$("sort").value;
+  let l=P.filter(p=>(cat==='All'||p.c===cat)&&(!q||(p.n+' '+p.s).toLowerCase().includes(q))&&(!wishOnly||wish.includes(p.id))&&p.r>=+$('rf').value&&p.p<=+$('pf').value);
+  if(s==="lo")l.sort((a,b)=>a.p-b.p);if(s==="hi")l.sort((a,b)=>b.p-a.p);if(s==="rate")l.sort((a,b)=>b.r-a.r);
+  $("result").textContent=l.length+" product"+(l.length===1?"":"s");
+  $("grid").innerHTML=l.length?l.map(p=>`<article class='card'><span class='badge'>-${Math.round(100-p.p/p.o*100)}%</span><button class='heart' data-w='${p.id}' aria-label='Save to wishlist'>${wish.includes(p.id)?'♥':'♡'}</button><div class='pic' style='background:${p.b}' aria-hidden='true'>${p.e}</div><div class='info'><h3 class='vw' data-v='${p.id}'>${p.n}</h3><span class="seller">Sold by ${p.s}</span><span class="rate">★ ${p.r.toFixed(1)}</span><span class='price'>${money(p.p)}<s>${money(p.o)}</s></span><span class='seller'>${p.p>=50?'Free delivery':'Total '+money(p.p+4.99)+' with delivery'}</span><button class='add' data-id='${p.id}'>Add to cart</button><button class='chip' data-k='${p.id}'>${cmp.includes(p.id)?'✓ Comparing':'Compare'}</button></div></article>`).join(""):`<p class="empty">No products match your search. Try a different word or category.</p>`;
+}
+function renderCart(){
+  const ids=Object.keys(cart).filter(i=>cart[i]>0);
+  let n=0,t=0;
+  $("lines").innerHTML=ids.length?ids.map(i=>{const p=P.find(x=>x.id==i);n+=cart[i];t+=p.p*cart[i];return `<div class="line"><span class="t">${p.e}</span><span class="n">${p.n}<br><span class="seller">${money(p.p)}</span></span><span class="qty"><button data-d="-1" data-id="${i}" aria-label="Remove one">−</button>${cart[i]}<button data-d="1" data-id="${i}" aria-label="Add one">+</button></span></div>`}).join(""):`<p class="empty">Your cart is empty. Add a product to get started.</p>`;
+  const dis=coupon==='SAVE10'?t*.1:0,sh=(t>=50||t===0)?0:4.99,tot=t-dis+sh;$('count').textContent=n;$('wc').textContent=wish.length;$('ship').innerHTML=t===0?'':`<div class='seller'>${t>=50?'You get free delivery':'Add '+money(50-t)+' more for free delivery'}</div><div class='ship'><i style='width:${Math.min(100,t/50*100)}%'></i></div><div class='seller'>${dis?'Coupon SAVE10: −'+money(dis)+' · ':''}Delivery: ${sh?money(sh):'Free'}</div>`;$('total').textContent=money(tot);
+}
+function setOpen(o){const d=$("drawer");d.classList.toggle("open",o);d.setAttribute("aria-hidden",!o)}
+document.addEventListener("click",e=>{
+  const t=e.target;
+  if(t.dataset.c){cat=t.dataset.c;renderCats();renderGrid()}
+  else if(t.classList.contains("add")){const i=t.dataset.id;cart[i]=(cart[i]||0)+1;save();renderCart();toast("Added to cart")}
+  else if(t.dataset.d){const i=t.dataset.id;cart[i]=Math.max(0,(cart[i]||0)+Number(t.dataset.d));save();renderCart()}
+});
+$("open").onclick=()=>setOpen(true);$("close").onclick=()=>setOpen(false);
+$("go").onclick=renderGrid;$("q").oninput=renderGrid;$("sort").onchange=renderGrid;
+$('checkout').onclick=()=>{const ids=Object.keys(cart).filter(i=>cart[i]>0);if(!ids.length)return toast('Your cart is empty');orders.unshift({id:'#'+Math.floor(10000+Math.random()*89999),date:new Date().toLocaleDateString(),n:ids.reduce((a,i)=>a+cart[i],0),total:$('total').textContent,items:ids.map(i=>P.find(x=>x.id==i).n).join(', ')});cart={};coupon='';save();renderCart();setOpen(false);toast('Order placed (demo only)')};
+const stars=r=>'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));
+const eta=()=>{const d=new Date();d.setDate(d.getDate()+3);return d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})};
+function openM(h){$('mbody').innerHTML=h;$('modal').classList.add('open')}
+function renderSeen(){$('rvwrap').innerHTML=seen.length?`<h2>Recently viewed</h2><div class='mini'>${seen.map(i=>{const p=P.find(x=>x.id===i);return `<span data-v='${i}'>${p.e} ${p.n}</span>`}).join('')}</div>`:''}
+function view(id){const p=P.find(x=>x.id===id),left=(id*5)%9+2,rel=P.filter(x=>x.c===p.c&&x.id!==id);seen=[id,...seen.filter(x=>x!==id)].slice(0,5);save();renderSeen();openM(`<div class='pic' style='background:${p.b}'>${p.e}</div><h2>${p.n}</h2><p class='seller'>Sold by ${p.s} · ${stars(p.r)} ${p.r.toFixed(1)}</p><p class='price'>${money(p.p)}<s>${money(p.o)}</s></p>${hist(p)}<p>Durable build, easy 30-day returns and a one-year warranty.</p><p class='rate'>${left<=5?'Only '+left+' left in stock':'In stock'} · Delivery by ${eta()}</p><button class='add' data-id='${p.id}'>Add to cart</button> <button class='chip' data-w='${p.id}'>Save to wishlist</button><h3>Customer reviews</h3><div class='seller'>Verified purchases only (sample data)</div>${[5,4,3,2,1].map(s=>`<div class='seller'>${s}★ <span class='ship' style='display:inline-block;width:140px;margin:0 6px'><i style='width:${Math.max(3,Math.round(100*Math.exp(-Math.abs(s-p.r)*1.2)/2.2))}%'></i></span></div>`).join('')}<div class='rv'>★★★★★ Exactly as described, arrived early.</div><div class='rv'>★★★★☆ Good value for the price.</div><div class='rv'>★★★★☆ Works well. Packaging could be better.</div>${rel.length?`<h3>More in ${p.c}</h3><div class='mini'>${rel.map(x=>`<span data-v='${x.id}'>${x.e} ${x.n}</span>`).join('')}</div>`:''}`)}
+document.addEventListener('click',e=>{const t=e.target;
+if(t.dataset.w){const i=+t.dataset.w;wish=wish.includes(i)?wish.filter(x=>x!==i):[...wish,i];save();renderGrid();renderCart();toast(wish.includes(i)?'Saved to wishlist':'Removed from wishlist')}
+else if(t.dataset.v){view(+t.dataset.v)}
+else if(t.id==='mx'||t.id==='modal'){$('modal').classList.remove('open')}
+else if(t.id==='applycp'){coupon=$('cp').value.trim().toUpperCase()==='SAVE10'?'SAVE10':'';save();renderCart();toast(coupon?'Coupon applied':'That coupon is not valid')}
+else if(t.id==='sv'){user=$('nm').value.replace(/[<>&"]/g,'').trim()||null;save();$('acct').textContent=user?'Hi, '+user:'Sign in';$('modal').classList.remove('open')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('modal').classList.remove('open');setOpen(false)}});
+$('wl').onclick=()=>{wishOnly=!wishOnly;$('wl').setAttribute('aria-pressed',wishOnly);renderGrid()};
+$('rf').onchange=$('pf').onchange=renderGrid;
+$('ord').onclick=()=>openM(`<h2>Your orders</h2>${orders.length?orders.map(o=>`<div class='rv'><b>${o.id}</b> · ${o.date} · ${o.n} item${o.n>1?'s':''} · ${o.total}<br><span class='seller'>${o.items}</span></div>`).join(''):`<p class='empty'>No orders yet. Place an order and it shows up here.</p>`}`);
+$('acct').onclick=()=>openM(`<h2>${user?'Hi, '+user:'Sign in'}</h2><div class='coupon'><input id='nm' placeholder='Your name' aria-label='Your name'><button class='chip' id='sv'>Save</button></div>`);
+$('acct').textContent=user?'Hi, '+user:'Sign in';
+function hist(p){const a=[...Array(11)].map((_,i)=>+(p.p*(1+(((p.id*(i+3)*7)%11)-3)/40)).toFixed(2));a.push(p.p);const mn=Math.min(...a),mx=Math.max(...a),pts=a.map((v,i)=>(i*20)+','+(36-(v-mn)/((mx-mn)||1)*30)).join(' ');return `<svg viewBox='0 0 220 40' width='220' height='40' role='img' aria-label='Price history'><polyline points='${pts}' fill='none' stroke='var(--link)' stroke-width='2'/></svg><div class='seller'>Last 90 days: low ${money(mn)}, high ${money(mx)}${p.p<=mn?' · Lowest price now':''} (sample data)</div>`}
+function renderCmp(){$('cmpbar').innerHTML=cmp.length?`<div class='cmpb'><button class='chip' id='cmpgo'>Compare ${cmp.length} (max 3)</button><button class='chip' id='cmpx'>Clear</button></div>`:''}
+document.addEventListener('click',e=>{const t=e.target;
+if(t.dataset.k){const i=+t.dataset.k;cmp=cmp.includes(i)?cmp.filter(x=>x!==i):cmp.length<3?[...cmp,i]:cmp;renderCmp();renderGrid()}
+else if(t.id==='cmpx'){cmp=[];renderCmp();renderGrid()}
+else if(t.id==='cmpgo'){if(cmp.length<2)return toast('Pick at least 2 products');const L=cmp.map(i=>P.find(x=>x.id===i));const row=(n,f)=>`<tr><th>${n}</th>${L.map(p=>`<td>${f(p)}</td>`).join('')}</tr>`;openM(`<h2>Compare products</h2><div style='overflow-x:auto'><table class='tbl'>${row('Product',p=>p.e+' '+p.n)}${row('Price',p=>money(p.p))}${row('With delivery',p=>money(p.p>=50?p.p:p.p+4.99))}${row('You save',p=>money(p.o-p.p))}${row('Rating',p=>stars(p.r)+' '+p.r.toFixed(1))}${row('Seller',p=>p.s)}</table></div>`)}});
+renderCats();renderGrid();renderCart();renderSeen();renderCmp();
+</script>
+</body>
+</html>
